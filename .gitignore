@@ -1,0 +1,7 @@
+
+/build/*
+
+/projects/VS2019/Arduboy_Emulator/.vs/*
+/projects/VS2019/Arduboy_Emulator/build/*
+
+*.vcxproj.user
