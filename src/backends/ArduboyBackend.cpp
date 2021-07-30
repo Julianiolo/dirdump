@@ -1,10 +1,13 @@
 #include "ArduboyBackend.h"
 
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "rlImGui/rlImGui.h"
 
-ABB::ArduboyBackend::ArduboyBackend() : displayBackend(&ab.display) {
-
+ABB::ArduboyBackend::ArduboyBackend(const char* n) : displayBackend(&ab.display) {
+	name = n;
+	debWinName = name + " - Debugger";
+	ab.mcu.debugger.debugOutputMode = A32u4::Debugger::OutputMode_Passthrough;
 }
 
 void ABB::ArduboyBackend::update() {
@@ -24,7 +27,7 @@ void ABB::ArduboyBackend::update() {
 void ABB::ArduboyBackend::draw() {
 	update();
 
-	if (ImGui::Begin("lul")) {
+	if (ImGui::Begin(name.c_str())) {
 		ImVec2 contentSize = ImGui::GetContentRegionAvail();
 		constexpr float ratio = (float)AB::Display::WIDTH / (float)AB::Display::HEIGHT;
 		ImVec2 size;
@@ -40,6 +43,31 @@ void ABB::ArduboyBackend::draw() {
 		ImVec2 cursor = ImGui::GetCursorPos();
 		ImGui::SetCursorPos({ cursor.x + pos.x, cursor.y + pos.y });
 		RLImGuiImageSize(&displayBackend.getTex(),size.x,size.y);
+	}
+	ImGui::End();
+
+	
+	if (ImGui::Begin(debWinName.c_str())) {
+		bool isHalted = ab.mcu.debugger.isHalted();
+		if (!isHalted)
+			ImGui::PushDisabled();
+
+		if (ImGui::Button("Step")) {
+			ab.mcu.debugger.step();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Continue")) {
+			ab.mcu.debugger.continue_();
+		}
+
+		if (!isHalted)
+			ImGui::PopDisabled();
+
+		if (ImGui::Button("Reset")) {
+			ab.reset();
+		}
+
+
 	}
 	ImGui::End();
 }

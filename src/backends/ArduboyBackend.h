@@ -3,6 +3,7 @@
 
 #include "Arduboy.h"
 #include "raylib.h"
+#include <string>
 
 #include "DisplayBackend.h"
 
@@ -12,11 +13,13 @@ namespace ABB {
 		Arduboy ab;
 	private:
 		DisplayBackend displayBackend;
+		std::string name;
+		std::string debWinName;
 
 		void update();
 	public:
 
-		ArduboyBackend();
+		ArduboyBackend(const char* n);
 
 		void draw();
 	};

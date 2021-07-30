@@ -17,7 +17,7 @@ ABB::DisplayBackend::~DisplayBackend() {
 void ABB::DisplayBackend::update() {
 	for (int y = 0; y < AB::Display::HEIGHT; y++) {
 		for (int x = 0; x < AB::Display::WIDTH; x++) {
-			((Color*)displayImg.data)[y * AB::Display::WIDTH + x] = display->getPixel(x, y) ? WHITE : BLACK;
+			((Color3*)displayImg.data)[y * AB::Display::WIDTH + x] = display->getPixel(x, y) ? Color3{255, 255, 255} : Color3{0,0,0};
 		}
 	}
 	UpdateTexture(displayTex, displayImg.data);

@@ -18,8 +18,8 @@ void ArduEmu::draw() {
 	}
 }
 
-ABB::ArduboyBackend& ArduEmu::addEmulator() {
-	ABB::ArduboyBackend* ptr = new ABB::ArduboyBackend();
+ABB::ArduboyBackend& ArduEmu::addEmulator(const char* n) {
+	ABB::ArduboyBackend* ptr = new ABB::ArduboyBackend(n);
 	instances.push_back(ptr);
 	return *ptr;
 }

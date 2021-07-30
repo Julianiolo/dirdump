@@ -12,6 +12,12 @@ namespace ABB {
 		Texture2D displayTex;
 		Image displayImg;
 
+		struct Color3 {
+			uint8_t r;
+			uint8_t g;
+			uint8_t b;
+		};
+
 	public:
 		DisplayBackend(AB::Display* display);
 		~DisplayBackend();

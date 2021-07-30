@@ -13,7 +13,7 @@ public:
 
 	static void draw();
 
-	static ABB::ArduboyBackend& addEmulator();
+	static ABB::ArduboyBackend& addEmulator(const char* n);
 };
 
 #endif
