@@ -20,6 +20,7 @@ void ABB::DisplayBackend::update() {
 			((Color*)displayImg.data)[y * AB::Display::WIDTH + x] = display->getPixel(x, y) ? WHITE : BLACK;
 		}
 	}
+	UpdateTexture(displayTex, displayImg.data);
 }
 
 Texture& ABB::DisplayBackend::getTex() {

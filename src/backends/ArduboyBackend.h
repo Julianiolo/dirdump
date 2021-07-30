@@ -8,11 +8,13 @@
 
 namespace ABB {
 	class ArduboyBackend {
+	public:
+		Arduboy ab;
 	private:
 		DisplayBackend displayBackend;
 
+		void update();
 	public:
-		Arduboy ab;
 
 		ArduboyBackend();
 

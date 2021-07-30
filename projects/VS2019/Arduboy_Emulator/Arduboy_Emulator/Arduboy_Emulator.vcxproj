@@ -159,12 +159,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\ArduEmu.cpp" />
     <ClCompile Include="..\..\..\..\src\backends\ArduboyBackend.cpp" />
     <ClCompile Include="..\..\..\..\src\backends\DisplayBackend.cpp" />
+    <ClCompile Include="..\..\..\..\src\main.cpp" />
     <ClCompile Include="..\..\..\..\src\rlImGui\rlImGui.cpp" />
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\ArdEmu.h" />
     <ClInclude Include="..\..\..\..\src\backends\ArduboyBackend.h" />
     <ClInclude Include="..\..\..\..\src\backends\DisplayBackend.h" />
     <ClInclude Include="..\..\..\..\src\oneHeaderLibs\VectorOperators.h" />
