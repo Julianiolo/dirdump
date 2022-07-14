@@ -1,10 +1,3 @@
-# Arduboy_Emulator
-a currently wip cross platform emulator of the Arduboy console written in C++
+# dirdump
 
-## Features:
-- Debugger
-- Analytics
-- Ram/Rom/Eeprom Hex Editor
-- Disassembler
-
-
+A program which recursively scans folders to visualize the space taken up by them
