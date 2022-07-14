@@ -164,7 +164,7 @@ void drawDiagramm(const char* str_id, const dirdump::FolderScanData& data, const
 		size.x = ImGui::GetContentRegionAvail().x;
 
 	constexpr float height = 30;
-	float totalSize = data.folders[data.rootInd].size;
+	float totalSize = (float)data.folders[data.rootInd].size;
 
 	if (ImGui::BeginChild(str_id, size)) {
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
@@ -179,7 +179,7 @@ void drawDiagramm(const char* str_id, const dirdump::FolderScanData& data, const
 				float width = folder.size / totalSize * size.x;
 				if (width >= 1) {
 					ImGui::SetCursorPos(ImVec2(exData.totalOff / totalSize * size.x, d * height));
-					ImGuiExt::Rect(folder.id, cols[ind], ImVec2(width, height));
+					ImGuiExt::Rect((ImGuiID)folder.id, cols[ind], ImVec2(width, height));
 
 					bool hovered = ImGui::IsItemHovered();
 					
@@ -264,7 +264,7 @@ void drawDiag2Rec(size_t ind, const ImVec2& startPos, float sizeFac, size_t hove
 
 		const ImVec4& col = cols[ind];
 
-		Color c = {col.x*255, col.y*255, col.z*255, 255};
+		Color c = {(uint8_t)(col.x*255), (uint8_t)(col.y*255), (uint8_t)(col.z*255), 255};
 		Rectangle rec = { x, y, width, height };
 		DrawRectangleRec(rec, c);
 
@@ -318,7 +318,7 @@ void drawDiagrammV2(const char* str_id, const dirdump::FolderScanData& data, con
 	
 
 	
-	float totalSize = data.folders[data.rootInd].size;
+	float totalSize = (float)data.folders[data.rootInd].size;
 	
 
 	float maxHeight = height * data.maxDepth;
@@ -329,10 +329,10 @@ void drawDiagrammV2(const char* str_id, const dirdump::FolderScanData& data, con
 	size_t hoveredLine = -1;
 	if (ImGui::IsWindowHovered()) {
 		if (ImGui::GetMousePos().y >= startPos.y && ImGui::GetMousePos().x >= startPos.x) {
-			hoveredLine = (ImGui::GetMousePos().y - startPos.y) / height;
+			hoveredLine = (size_t)((ImGui::GetMousePos().y - startPos.y) / height);
 
 			if (ImGui::GetIO().MouseWheel != 0) {
-				float diff = 1 - ImGui::GetIO().MouseWheel * -0.25;
+				float diff = 1 - ImGui::GetIO().MouseWheel * -0.25f;
 
 				float mouseXOff = ImGui::GetMousePos().x - startPos.x;
 				float mouseOver = mouseXOff / ((size.x / totalSize) * *scale);
@@ -365,7 +365,7 @@ void drawDiagrammV2(const char* str_id, const dirdump::FolderScanData& data, con
 	float off = *scroll / (size.x / totalSize);
 	float max = size.x;
 
-	RLImGuiImageRect(&diagTex.texture, size.x, size.y, {0, 0, size.x, -size.y});
+	RLImGuiImageRect(&diagTex.texture, (int)size.x, (int)size.y, {0, 0, size.x, -size.y});
 
 	BeginTextureMode(diagTex);
 	ClearBackground(BLANK);
@@ -402,7 +402,7 @@ void setup() {
     io.WantSaveIniSettings = false;
     io.ConfigWindowsMoveFromTitleBarOnly = true;
     
-    printf("%s\n", GetWorkingDirectory());
+    //printf("%s\n", GetWorkingDirectory());
 
     path = GetWorkingDirectory();
 }
@@ -415,7 +415,7 @@ void draw() {
 
     BeginRLImGui();
 
-    ImGui::ShowDemoWindow(NULL);
+    //ImGui::ShowDemoWindow(NULL);
 
     if (ImGui::Begin("DirDump")) {
         ImGui::TextUnformatted(path.c_str());
@@ -434,15 +434,23 @@ void draw() {
 				hasData = true;
 				cols.resize(data.folders.size());
 				for (size_t i = 0; i < data.folders.size(); i++) {
-					ImGui::ColorConvertHSVtoRGB((float)(rand() % 256) / 256, 0.7, 0.9, cols[i].x, cols[i].y, cols[i].z);
+					ImGui::ColorConvertHSVtoRGB((float)(rand() % 256) / 256, 0.7f, 0.9f, cols[i].x, cols[i].y, cols[i].z);
 					cols[i].w = 1;
 				}
 			}
 
+			ImGui::SetNextItemWidth(100);
+			static int32_t numThreads = 4;
+			ImGui::InputInt("Number of Threads", &numThreads);
+			if (numThreads > 8)
+				numThreads = 8;
+
             if (ImGui::Button("Scan")) {
-                dirdump::startDump(path.c_str());
+                dirdump::startDump(path.c_str(), numThreads);
 				scanAvail = true;
             }
+
+			
         }
         else {
 			ImGui::BeginDisabled();

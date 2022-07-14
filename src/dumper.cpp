@@ -67,7 +67,7 @@ public:
 
 namespace dirdump {
     std::atomic<uint64_t> fileCnt = 0;
-    std::atomic<uint64_t> folderCnt = 1;
+    std::atomic<uint64_t> folderCnt = 0;
 
     struct WorkPacket {
         std::string path;
@@ -331,7 +331,7 @@ dirdump::FolderScanDataEx dirdump::generateExtraData(const FolderScanData& scan)
 }
 
 
-void dirdump::startDump(const char* path) {
+void dirdump::startDump(const char* path, uint32_t numThreads) {
     start = std::chrono::high_resolution_clock::now();
 
     workerActive = true;
@@ -343,14 +343,12 @@ void dirdump::startDump(const char* path) {
     fileCnt = 0;
     folderCnt = 1;
 
-    const size_t workerNum = 8;
-
     workQueue.pushUnsafe({path, (uint64_t)-1, 0});
     if (worker.size() == 0) {
-        for (size_t i = 0; i < workerNum; i++) {
-            worker.push_back(Worker(i));
+        for (size_t i = 0; i < numThreads; i++) {
+            worker.push_back(Worker((uint8_t)i));
         }
-        for (size_t i = 0; i < workerNum; i++) {
+        for (size_t i = 0; i < worker.size(); i++) {
             worker[i].start();
         }
     }

@@ -61,7 +61,7 @@ namespace dirdump {
         uint64_t nanos;
 	};
 	Stats getStats();
-	void startDump(const char* path);
+	void startDump(const char* path, uint32_t numThreads = 8);
 	void update();
 
 	bool isBusy();
