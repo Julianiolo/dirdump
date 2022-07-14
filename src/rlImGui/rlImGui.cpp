@@ -254,26 +254,29 @@ static void rlImGuiRenderTriangles(unsigned int count, int indexStart, const ImV
     rlBegin(RL_TRIANGLES);
     rlSetTexture(textureId);
 
-    for (unsigned int i = 0; i <= (count - 3); i += 3)
-    {
-        if(rlCheckRenderBatchLimit(3)) 
+    if (count > 0) {
+        for (unsigned int i = 0; i <= (count - 3); i += 3)
         {
-            rlBegin(RL_TRIANGLES);
-            rlSetTexture(textureId);
+            if(rlCheckRenderBatchLimit(3)) 
+            {
+                rlBegin(RL_TRIANGLES);
+                rlSetTexture(textureId);
+            }
+
+            ImDrawIdx indexA = indexBuffer[indexStart + i];
+            ImDrawIdx indexB = indexBuffer[indexStart + i + 1];
+            ImDrawIdx indexC = indexBuffer[indexStart + i + 2];
+
+            ImDrawVert vertexA = vertBuffer[indexA];
+            ImDrawVert vertexB = vertBuffer[indexB];
+            ImDrawVert vertexC = vertBuffer[indexC];
+
+            rlImGuiTriangleVert(vertexA);
+            rlImGuiTriangleVert(vertexB);
+            rlImGuiTriangleVert(vertexC);
         }
-
-        ImDrawIdx indexA = indexBuffer[indexStart + i];
-        ImDrawIdx indexB = indexBuffer[indexStart + i + 1];
-        ImDrawIdx indexC = indexBuffer[indexStart + i + 2];
-
-        ImDrawVert vertexA = vertBuffer[indexA];
-        ImDrawVert vertexB = vertBuffer[indexB];
-        ImDrawVert vertexC = vertBuffer[indexC];
-
-        rlImGuiTriangleVert(vertexA);
-        rlImGuiTriangleVert(vertexB);
-        rlImGuiTriangleVert(vertexC);
     }
+    
     rlEnd();
 }
 
