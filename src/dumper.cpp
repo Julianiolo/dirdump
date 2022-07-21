@@ -133,7 +133,7 @@ namespace dirdump {
                 if (entry.d_name[0] == '.' && (entry.d_name[1] == 0 || (entry.d_name[1] == '.' && entry.d_name[2] == 0)))
                     continue;
 
-                std::string entryPath = wp.path + "/" + entry.d_name;
+                std::string entryPath = wp.path + entry.d_name;
 
 #if 0
                 StringTable::str entryPath = stable.addStr(stable.getStr(wp.path), 0, false);
@@ -142,7 +142,7 @@ namespace dirdump {
 #endif
 
                 if (entry.d_type == DT_DIR) {
-                    toScan.push_back({ entryPath, folderID, wp.depth+1});
+                    toScan.push_back({ entryPath + "/", folderID, wp.depth + 1});
                     folderCnt++;
                 }
                 else {
