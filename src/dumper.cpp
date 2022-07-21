@@ -68,6 +68,7 @@ public:
 namespace dirdump {
     std::atomic<uint64_t> fileCnt = 0;
     std::atomic<uint64_t> folderCnt = 0;
+    std::atomic<uint64_t> folderErrCnt = 0;
 
     struct WorkPacket {
         std::string path;
@@ -114,6 +115,7 @@ namespace dirdump {
             DIR *dir = opendir(wp.path.c_str());
             if (!dir) {
                 folder.error = true;
+                folderErrCnt++;
                 return;
             }
 
@@ -385,6 +387,7 @@ dirdump::Stats dirdump::getStats() {
     Stats stats;
     stats.files = fileCnt;
     stats.folders = folderCnt;
+    stats.folderErrs = folderErrCnt;
     stats.nanos = std::chrono::duration_cast<std::chrono::nanoseconds>( (workerActive ? std::chrono::high_resolution_clock::now() : end) - start).count();
 
     return stats;

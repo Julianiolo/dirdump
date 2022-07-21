@@ -460,7 +460,7 @@ void draw() {
         }
 
         dirdump::Stats stats = dirdump::getStats();
-        ImGui::Text("%llu folders, %llu files scanned, %fs", stats.folders, stats.files, (double)stats.nanos/1000000000);
+        ImGui::Text("%llu folders, %llu files scanned, %llu folder scans failed, %fs", stats.folders, stats.files, stats.folderErrs, (double)stats.nanos/1000000000);
 
 
 		if (hasData)

@@ -58,6 +58,7 @@ namespace dirdump {
 	struct Stats {
 		uint64_t files;
 		uint64_t folders;
+        uint64_t folderErrs;
         uint64_t nanos;
 	};
 	Stats getStats();
